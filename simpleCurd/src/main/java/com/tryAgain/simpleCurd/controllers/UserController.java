@@ -7,6 +7,7 @@ import com.tryAgain.simpleCurd.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -19,6 +20,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
 //    @GetMapping
 //    public  String getUsers()
@@ -39,6 +43,7 @@ public class UserController {
     @PostMapping
     public UserEntity createUser(@RequestBody UserEntity userEntity) {
 
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 
        return userRepository.save(userEntity);
     }
